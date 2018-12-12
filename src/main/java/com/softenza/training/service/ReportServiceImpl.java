@@ -1,16 +1,8 @@
 package com.softenza.training.service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.io.*;
+import java.sql.*;
+import java.util.*;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +27,7 @@ public class ReportServiceImpl implements ReportService{
 	public String createReport(Long userId, Short role, String reportName) throws SQLException {
 		try {
 
-			Resource resource = resourceLoader
-					.getResource("classpath:/reports/" + reportName + ".jasper");
-
+			Resource resource = resourceLoader.getResource("classpath:/reports/" + reportName + ".jasper");
 			InputStream reportStream = resource.getInputStream();
 
 			Map parameters = new HashMap();
@@ -55,9 +45,9 @@ public class ReportServiceImpl implements ReportService{
 
 			OutputStream ouputStream = new ByteArrayOutputStream();
 			
-			Connection c = this.datasource.getConnection();
+			Connection conn = this.datasource.getConnection();
 
-			byte[] reportBytes = JasperRunManager.runReportToPdf(reportStream, parameters, c);
+			byte[] reportBytes = JasperRunManager.runReportToPdf(reportStream, parameters, conn); 		 
 
 			String newReportName = reportName + "_" + System.currentTimeMillis() + ".pdf";
 
