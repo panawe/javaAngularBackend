@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.softenza.training.domain.BasicResponse;
@@ -113,6 +114,8 @@ public class ReservationController {
 
 		try {
 			this.genericService.save(reservation);
+			
+			
 		} catch (Exception e) {
 			result = e.getMessage();
 		}
@@ -142,14 +145,11 @@ public class ReservationController {
 
 	}
     
-    @RequestMapping(value = "/sendPassword", method = RequestMethod.POST)
-	public @ResponseBody String sendPassword(@PathVariable("entity") String entity, @RequestBody User user) {
+	@RequestMapping(value = "/sendEmail", method = RequestMethod.GET)
+	public  String sendEmail() {
 
-		if (user == null || (user.getEmail() == null && user.getEmail() == null)) {
-			return "Failure";
-		}
-
-		User storedUser = this.userService.getUser(user.getEmail(), null);
+		//User storedUser = this.userService.getUser(reservation.getUserEmail(), null);
+		User storedUser = this.userService.getUser("ericgbekou@hotmail.com", null);
 
 		if (storedUser == null) {
 			return "Failure";
@@ -173,5 +173,11 @@ public class ReservationController {
 		}
 
 		return "Success";
+	}
+
+
+	public static void main(String [] args) {
+		
+		
 	}
 }
